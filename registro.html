@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRaíz - Crear cuenta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        body {
+            background-color: #121212;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0;
+        }
+        .mobile-frame {
+            background-color: #f6f4ed; /* Color crema de la captura */
+            width: 390px; height: 844px;
+            border-radius: 45px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 30px; background-color: #000;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10;
+        }
+        .header { padding: 60px 24px 20px; display: flex; align-items: flex-start; gap: 15px; }
+        .back-btn {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            color: #255d2b; font-weight: bold; font-size: 18px; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .header-text h1 { color: #255d2b; font-size: 26px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -0.5px; }
+        .header-text p { color: #6b7280; font-size: 14px; margin: 0; font-weight: 500; }
+        .content { padding: 0 24px; flex: 1; overflow-y: auto; }
+        
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 700; color: #2a3d2a; margin-bottom: 8px; }
+        .input-group label span { color: #d32f2f; }
+        .input-group input {
+            width: 100%; padding: 16px; border: 1px solid #e5e5e5;
+            border-radius: 12px; box-sizing: border-box; font-size: 15px; background-color: #FFFFFF; outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus { border-color: #51a651; }
+        .input-hint { font-size: 12px; color: #6b7280; margin-top: 8px; display: block; }
+        
+        .profile-label { font-size: 14px; font-weight: 700; color: #2a3d2a; margin: 24px 0 12px 0; display: block; }
+        .profile-label span { color: #d32f2f; }
+        
+        .card-option {
+            background: #FFFFFF; border: 2px solid transparent; border-radius: 16px;
+            padding: 16px; margin-bottom: 12px; display: flex; align-items: center;
+            cursor: pointer; transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .card-option input[type="radio"] { display: none; }
+        .card-option.selected { border-color: #51a651; background-color: #ffffff; }
+        
+        .icon-box {
+            width: 44px; height: 44px; background-color: #f6f4ed; border-radius: 10px;
+            display: flex; justify-content: center; align-items: center; font-size: 22px; margin-right: 16px;
+        }
+        
+        .text-box { flex: 1; }
+        .text-box strong { display: block; color: #2a3d2a; font-size: 15px; margin-bottom: 3px; font-weight: 600; }
+        .text-box span { color: #6b7280; font-size: 13px; }
+        
+        .check-circle {
+            width: 20px; height: 20px; border-radius: 50%; border: 2px solid #d1d5db;
+            display: flex; justify-content: center; align-items: center; transition: all 0.2s;
+            position: relative;
+        }
+        .card-option.selected .check-circle { border-color: #51a651; }
+        .card-option.selected .check-circle::after { 
+            content: ''; 
+            position: absolute;
+            width: 10px; height: 10px;
+            background-color: #51a651;
+            border-radius: 50%;
+        }
+        
+        .bottom-actions { padding: 10px 24px 40px; background-color: #f6f4ed; }
+        .buttons-row { display: flex; gap: 12px; margin-bottom: 20px; }
+        .btn { flex: 1; padding: 16px; border-radius: 14px; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-cancel { background-color: #ffffff; color: #51a651; border: 1px solid #51a651; }
+        .btn-register { background-color: #51a651; color: white; }
+        .btn-cancel:active { background-color: #f0f0f0; }
+        .btn-register:active { background-color: #439043; }
+        .terms { text-align: center; font-size: 12px; color: #6b7280; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="notch"></div>
+        <div class="header">
+            <button class="back-btn" onclick="window.location.href='index.html'">❮</button>
+            <div class="header-text">
+                <h1>Crear cuenta</h1>
+                <p>Solo necesitamos lo básico</p>
+            </div>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label>Nombre <span>*</span></label>
+                <input type="text" value="Ana López" readonly>
+            </div>
+            <div class="input-group">
+                <label>Correo electrónico <span>*</span></label>
+                <input type="email" value="ana.lopez@correo.com" readonly>
+            </div>
+            <div class="input-group">
+                <label>Contraseña <span>*</span></label>
+                <input type="password" value="••••••••" readonly>
+                <span class="input-hint">Combina letras y números</span>
+            </div>
+            <label class="profile-label">Tipo de perfil <span>*</span></label>
+
+            <label class="card-option selected" onclick="seleccionarTarjeta(this)">
+                <input type="radio" name="perfil" value="src/roles/residente/EcoRaíz.html" checked>
+                <div class="icon-box">🪴</div>
+                <div class="text-box"><strong>Residente urbano</strong><span>Tengo plantas en casa</span></div>
+                <div class="check-circle"></div>
+            </label>
+
+            <label class="card-option" onclick="seleccionarTarjeta(this)">
+                <input type="radio" name="perfil" value="src/roles/experto/EcoRaiz_segmento2.html">
+                <div class="icon-box">🔬</div>
+                <div class="text-box"><strong>Experto ambiental</strong><span>Investigo o enseño</span></div>
+                <div class="check-circle"></div>
+            </label>
+
+            <label class="card-option" onclick="seleccionarTarjeta(this)">
+                <input type="radio" name="perfil" value="src/roles/emprendedor/EcoRaiz_segmento3.html">
+                <div class="icon-box">🏪</div>
+                <div class="text-box"><strong>Emprendedor</strong><span>Vivero, alquiler o venta</span></div>
+                <div class="check-circle"></div>
+            </label>
+        </div>
+        <div class="bottom-actions">
+            <div class="buttons-row">
+                <button class="btn btn-cancel" onclick="window.location.href='index.html'">Cancelar</button>
+                <button class="btn btn-register" onclick="ejecutarRegistro()">Registrarse</button>
+            </div>
+            <div class="terms">Al continuar aceptas los Términos y la Política de privacidad.</div>
+        </div>
+    </div>
+
+    <script>
+        function seleccionarTarjeta(elementoSeleccionado) {
+            const tarjetas = document.querySelectorAll('.card-option');
+            tarjetas.forEach(tarjeta => tarjeta.classList.remove('selected'));
+            elementoSeleccionado.classList.add('selected');
+        }
+        function ejecutarRegistro() {
+            const rutaElegida = document.querySelector('input[name="perfil"]:checked').value;
+            window.location.href = rutaElegida;
+        }
+    </script>
+</body>
+</html>

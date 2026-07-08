@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRaíz - Bienvenido</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+        
+        body {
+            background-color: #121212;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0;
+        }
+        .mobile-frame {
+            background-color: #255d2b; /* Verde oscuro exacto de la captura */
+            width: 390px; height: 844px;
+            border-radius: 45px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 40px 24px; box-sizing: border-box;
+            color: white; text-align: center;
+        }
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 30px; background-color: #000;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10;
+        }
+        .logo-container {
+            margin-top: 180px; margin-bottom: 25px;
+            width: 120px; height: 120px;
+            background-color: #aed5a6; /* Círculo verde claro */
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .leaf-shape {
+            font-size: 55px; 
+            /* Se mantiene el emoji como base, pero centrado en el nuevo círculo */
+        }
+        h1 { font-size: 36px; font-weight: 800; margin: 10px 0 10px; letter-spacing: -1px; color: #ffffff; }
+        p.subtitle {
+            font-size: 15px; color: #d0e5d0; line-height: 1.5;
+            margin: 0 30px 60px; font-weight: 400;
+        }
+        .bottom-section {
+            margin-top: auto; width: 100%; display: flex; flex-direction: column; gap: 15px;
+            margin-bottom: 40px;
+        }
+        .btn-primary {
+            background-color: #51a651; /* Verde brillante del botón */
+            color: white;
+            padding: 16px; border-radius: 14px; border: none;
+            font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .btn-primary:active { background-color: #439043; transform: scale(0.98); }
+        .login-link {
+            color: #ffffff; font-size: 15px; font-weight: 600; cursor: pointer;
+            text-decoration: none; padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="notch"></div>
+        <div class="logo-container">
+            <div class="leaf-shape">🪴</div>
+        </div>
+        <h1>EcoRaíz</h1>
+        <p class="subtitle">Cuida tus plantas con datos simples,<br>no con dudas.</p>
+        <div class="bottom-section">
+            <button class="btn-primary" onclick="window.location.href='registro.html'">
+                Empezar gratis
+            </button>
+            <a class="login-link" href="registro.html">
+                Ya tengo cuenta
+            </a>
+        </div>
+    </div>
+</body>
+</html>

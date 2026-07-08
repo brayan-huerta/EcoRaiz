@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>EcoRaíz · Prototipo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; background: #1a1a1a; font-family: 'Nunito', system-ui, sans-serif; }
+    body {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(at 20% 20%, #2a3a2a 0%, transparent 50%),
+        radial-gradient(at 80% 80%, #1f3326 0%, transparent 50%),
+        #141914;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* iPhone shell */
+    .phone-shell {
+      width: 419px; height: 878px;
+      background: #0c0f0d;
+      border-radius: 56px;
+      padding: 13px;
+      box-shadow:
+        0 0 0 2px #2a2a2a,
+        0 0 0 4px #0c0f0d,
+        0 30px 80px rgba(0,0,0,0.6),
+        0 60px 120px rgba(0,80,40,0.15);
+      position: relative;
+    }
+    .phone-screen {
+      width: 393px; height: 852px;
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+      background: #F5F1E8;
+    }
+    /* Dynamic island */
+    .phone-island {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 124px; height: 36px; background: #000;
+      border-radius: 20px; z-index: 200; pointer-events: none;
+    }
+
+    /* Wrapper layout */
+    .stage {
+      display: flex;
+      justify-content: center; /* Esto centrará el celular */
+      width: 100%;
+    }
+    .meta {
+      display: none;
+      width: 320px; color: #d8dfd2; padding-top: 40px;
+    }   
+    .meta h1 {
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 28px;
+      letter-spacing: -0.5px; margin: 0 0 4px; color: #fff;
+    }
+    .meta .tag {
+      display: inline-block; padding: 3px 10px; border-radius: 999px;
+      background: rgba(165,214,167,0.12); color: #A5D6A7;
+      font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 11px;
+      letter-spacing: 0.4px; margin-bottom: 14px;
+    }
+    .meta p {
+      font-size: 13px; line-height: 1.55; color: #aab1a4; margin: 0 0 20px;
+    }
+    .meta .keys {
+      background: rgba(255,255,255,0.04); border-radius: 14px; padding: 14px 16px;
+      font-size: 12px; color: #d8dfd2; line-height: 1.6;
+    }
+    .meta .keys strong { color: #A5D6A7; font-family: 'Poppins', sans-serif; font-weight: 600; }
+    .meta .crumb {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 8px;
+      font-family: ui-monospace, 'SF Mono', monospace; font-size: 11px;
+      color: #A5D6A7; margin-top: 12px;
+    }
+    .heur {
+      margin-top: 16px; background: rgba(255,255,255,0.03); border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .heur h3 {
+      margin: 0 0 8px; color: #fff; font-family: 'Poppins', sans-serif;
+      font-weight: 600; font-size: 13px;
+    }
+    .heur ul { margin: 0; padding-left: 18px; }
+    .heur li { font-size: 11px; line-height: 1.5; color: #aab1a4; margin-bottom: 4px; }
+    .heur li b { color: #A5D6A7; font-weight: 600; }
+
+    /* Quick screen index (right column) */
+    .index {
+      display: none;
+      width: 200px; padding-top: 40px;
+    }
+    .index h3 {
+      font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.6px; color: #8b9085; margin: 0 0 10px; text-transform: uppercase;
+    }
+    .index .group { margin-bottom: 16px; }
+    .index button {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 8px 10px; margin-bottom: 4px;
+      font-family: 'Nunito', sans-serif; font-size: 12px; color: #d8dfd2;
+      cursor: pointer; text-align: left; transition: all 150ms;
+    }
+    .index button:hover { background: rgba(76,175,80,0.12); color: #A5D6A7; border-color: rgba(76,175,80,0.3); }
+    .index button.active { background: rgba(76,175,80,0.18); border-color: #4CAF50; color: #fff; font-weight: 600; }
+    .index .ico { font-size: 14px; }
+
+    /* Animations */
+    @keyframes toastIn { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes sheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    @keyframes pop     { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    button { font-family: inherit; }
+
+    @media (max-width: 900px) {
+      .stage { flex-direction: column; }
+      .meta, .index { width: 393px; padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="tokens.jsx"></script>
+  <script type="text/babel" src="screens-general.jsx"></script>
+  <script type="text/babel" src="screens-ru.jsx"></script>
+  <script type="text/babel" src="screens-em.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "plantState": "warn",
+      "emptyState": false,
+      "errorState": false,
+      "showHU": true
+    }/*EDITMODE-END*/;
+
+    function Stage() {
+      const [tweaks, setTweaks] = useTweaks(TWEAK_DEFAULTS);
+      const setTweak = (k, v) => {
+        if (typeof k === 'object') setTweaks(s => ({ ...s, ...k }));
+        else setTweaks(s => ({ ...s, [k]: v }));
+        // persist
+        const edits = typeof k === 'object' ? k : { [k]: v };
+        try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+      };
+
+      // Register screens once SCREENS object exists
+      const screens = {
+        'splash': SCRSplash, 'login': SCRLogin, 'register': SCRRegister,
+        'recover': SCRRecover, 'onboarding': SCROnboarding,
+        'dashboard': SCRDashboard, 'plant-list': SCRPlantList,
+        'plant-detail': SCRPlantDetail, 'add-plant': SCRAddPlant,
+        'plant-created': SCRPlantCreated,
+        'calendar': SCRCalendar, 'history': SCRHistory,
+        'alerts': SCRAlerts, 'tips': SCRTips,
+        'profile': SCRProfile, 'notifications': SCRNotifications,
+        'edit-profile': SCREditProfile, 'settings': SCRSettings,
+        'guide': SCRGuide, 'help': SCRGuide,
+        'edit-plant': SCRAddPlant,
+        'error-state': SCRErrorState,
+        'em-dashboard': SCREMDashboard,
+        'em-inventory': SCREMInventory,
+        'em-add-plant': SCREMAddCommercialPlant,
+        'em-availability': SCREMAvailability,
+        'em-risks': SCREMRisks,
+        'em-critical': SCREMCriticalPlants,
+        'em-corrective': SCREMCorrectiveAction,
+        'em-maintenance-history': SCREMMaintenanceHistory,
+        'em-losses': SCREMPotentialLosses,
+        'em-lots': SCREMLots,
+        'em-compare-lots': SCREMCompareLots,
+        'em-export-report': SCREMExportReport,
+        'em-assign-responsible': SCREMAssignResponsible,
+        'em-weekly-summary': SCREMWeeklySummary,
+      };
+      registerScreens(screens);
+
+      // Track current for index highlight
+      const [currentScreen, setCurrentScreen] = useState('splash');
+      const initial = (window.location.hash || '#em-dashboard').slice(1);
+
+      const screenGroups = [
+        { title: 'Acceso (EP-01)', items: [
+          { id: 'splash',     l: 'Splash',           i: '🌱' },
+          { id: 'login',      l: 'Iniciar sesión',   i: '🔑' },
+          { id: 'register',   l: 'Registro',         i: '📝' },
+          { id: 'recover',    l: 'Recuperar pass',   i: '📩' },
+          { id: 'onboarding', l: 'Onboarding',       i: '🎉' },
+        ]},
+        { title: 'Emprendedor (EP-04/06/08)', items: [
+          { id: 'em-dashboard',    l: 'Panel comercial', i: '🏪' },
+          { id: 'em-inventory',    l: 'Inventario vivo', i: '🌿' },
+          { id: 'em-add-plant',    l: 'Agregar comercial', i: '➕' },
+          { id: 'em-availability', l: 'Disponibilidad', i: '🏷️' },
+          { id: 'em-risks',        l: 'Riesgos deterioro', i: '🚨' },
+          { id: 'em-critical',     l: 'Críticas', i: '🔴' },
+        ]},
+        { title: 'Mantenimiento (EP-05)', items: [
+          { id: 'em-corrective',           l: 'Acción correctiva', i: '🛠️' },
+          { id: 'em-maintenance-history',  l: 'Historial mant.', i: '📋' },
+          { id: 'em-assign-responsible',   l: 'Responsable', i: '👥' },
+        ]},
+        { title: 'Gestión comercial (EP-07/08)', items: [
+          { id: 'em-losses',          l: 'Pérdidas potenciales', i: '💸' },
+          { id: 'em-lots',            l: 'Lotes comerciales', i: '📦' },
+          { id: 'em-compare-lots',    l: 'Comparar lotes', i: '📊' },
+          { id: 'em-export-report',   l: 'Reporte comercial', i: '📄' },
+          { id: 'em-weekly-summary',  l: 'Resumen semanal', i: '📅' },
+        ]},
+        { title: 'Perfil + Sistema', items: [
+          { id: 'profile',       l: 'Mi perfil',        i: '👤' },
+          { id: 'edit-profile',  l: 'Editar perfil',    i: '✏️' },
+          { id: 'notifications', l: 'Notificaciones',   i: '🔔' },
+          { id: 'settings',      l: 'Configuración',    i: '⚙️' },
+          { id: 'guide',         l: 'Guía / Ayuda',     i: '❓' },
+        ]},
+      ];
+
+      return (
+        <AppProvider initial={initial} tweaks={tweaks} setTweak={setTweak}>
+          <CurrentTracker onChange={setCurrentScreen}/>
+          <div className="stage">
+            <div className="meta">
+              <span className="tag">EMPRENDEDOR · 13 HUs</span>
+              <h1>EcoRaíz</h1>
+              <p>Prototipo navegable del flujo end-to-end para el segmento "Emprendedores con pequeños negocios de plantas".
+                Cubre US-EM-01 a US-EM-13: inventario vivo, riesgos comerciales, lotes, mantenimiento y reportes.</p>
+              <div className="keys">
+                <strong>Cómo usar:</strong><br/>
+                • Toca cualquier botón en la app — son reales.<br/>
+                • Tab bar inferior navega entre secciones.<br/>
+                • Usa Tweaks (esquina inferior derecha) para cambiar estados.<br/>
+                • Etiquetas <span style={{fontFamily:'monospace',background:'#A5D6A7',color:'#1B5E20',padding:'1px 4px',borderRadius:3,fontSize:10}}>US-XX-NN</span> trazan a las HUs.
+              </div>
+              <span className="crumb">📱 393×852 · iPhone 16</span>
+              <div className="heur">
+                <h3>10 Heurísticas de Nielsen aplicadas</h3>
+                <ul>
+                  <li><b>1·Visibilidad:</b> dashboard con estado de cada planta, toasts, tabs activas</li>
+                  <li><b>2·Sistema↔mundo:</b> "Riega ya" vs "Error 400"; emoji + lenguaje claro</li>
+                  <li><b>3·Control:</b> back, cancelar, posponer en cada flujo</li>
+                  <li><b>4·Consistencia:</b> mismos botones, semáforo, headers en todas las pantallas</li>
+                  <li><b>5·Prevención:</b> confirmaciones para borrar; alertas críticas no se desactivan</li>
+                  <li><b>6·Reconocer:</b> iconos + labels en tabs; chips con icono+texto</li>
+                  <li><b>7·Flexibilidad:</b> filtros, búsqueda, acceso rápido a calendario/evolución</li>
+                  <li><b>8·Estética:</b> jerarquía clara, paleta limitada, espacios generosos</li>
+                  <li><b>9·Errores:</b> mensajes con icono+causa+recuperación (Field error, sin conexión)</li>
+                  <li><b>10·Ayuda:</b> Guía de uso, ? contextual, tooltips en campos opcionales</li>
+                </ul>
+              </div>
+            </div>
+            <div className="phone-shell">
+              <div className="phone-screen">
+                <div className="phone-island"/>
+                <Router/>
+                <ToastLayer/>
+                <ModalLayer/>
+              </div>
+            </div>
+            <div className="index">
+              {screenGroups.map(g => (
+                <div className="group" key={g.title}>
+                  <h3>{g.title}</h3>
+                  {g.items.map(s => (
+                    <NavBtn key={s.id} screen={s} current={currentScreen}/>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <TweaksPanel title="Tweaks · Estados">
+            <TweakSection label="Estado del detalle de planta">
+              <TweakRadio label="Semáforo"
+                value={tweaks.plantState}
+                options={[
+                  { value: 'ok', label: '✓ Saludable' },
+                  { value: 'warn', label: '⚠ Atención' },
+                  { value: 'danger', label: '🚨 Crítica' },
+                ]}
+                onChange={v => setTweak('plantState', v)}/>
+            </TweakSection>
+            <TweakSection label="Estados especiales">
+              <TweakToggle label="Estado vacío (sin plantas)"
+                value={tweaks.emptyState}
+                onChange={v => setTweak('emptyState', v)}/>
+              <TweakToggle label="Estado de error (login)"
+                value={tweaks.errorState}
+                onChange={v => setTweak('errorState', v)}/>
+            </TweakSection>
+            <TweakSection label="Anotaciones">
+              <TweakToggle label="Mostrar IDs de HU"
+                value={tweaks.showHU}
+                onChange={v => setTweak('showHU', v)}/>
+            </TweakSection>
+          </TweaksPanel>
+        </AppProvider>
+      );
+    }
+
+    function CurrentTracker({ onChange }) {
+      const { current } = useApp();
+      React.useEffect(() => { onChange(current); }, [current]);
+      return null;
+    }
+
+    function NavBtn({ screen, current }) {
+      // We can't use useApp here because it's outside provider... move inline
+      return (
+        <button
+          onClick={() => {
+            window.location.hash = screen.id;
+            // also dispatch directly
+            const ev = new Event('hashchange');
+            window.dispatchEvent(ev);
+          }}
+          className={current === screen.id ? 'active' : ''}>
+          <span className="ico">{screen.i}</span>
+          {screen.l}
+        </button>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Stage/>);
+  </script>
+</body>
+</html>
